@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="ApplicationCore" namespace="ApplicationCore.Domain.EN">
+  <class name="Anuncio" table="Anuncios">
+    <id name="IdAnuncio" column="Id" type="long">
+      <generator class="hilo">
+        <param name="table">NHibernateUniqueKey</param>
+        <param name="column">NextHigh</param>
+        <param name="max_lo">100</param>
+      </generator>
+    </id>
+    <property name="Titulo" column="Titulo" />
+    <property name="FechaPublicacion" column="FechaPublicacion" />
+    <property name="Estado" column="Estado" />
+    <property name="PrecioVenta" column="PrecioVenta" />
+
+    <property name="UsuarioId" column="UsuarioId" />
+    <property name="VehiculoId" column="VehiculoId" />
+    <many-to-one name="Usuario" class="Usuario" column="UsuarioId" insert="false" update="false" />
+    <many-to-one name="Vehiculo" class="Vehiculo" column="VehiculoId" insert="false" update="false" />
+
+    <bag name="Mensajes" inverse="true" cascade="all-delete-orphan">
+      <key column="AnuncioId" />
+      <one-to-many class="Mensaje" />
+    </bag>
+
+    <bag name="Pagos" inverse="true" cascade="all-delete-orphan">
+      <key column="AnuncioId" />
+      <one-to-many class="Pago" />
+    </bag>
+  </class>
+</hibernate-mapping>

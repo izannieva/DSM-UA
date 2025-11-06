@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "source": "diagrama.puml",
+    "generatedBy": "assistant",
+    "generatedAt": "2025-11-06T00:00:00Z",
+    "notes": "Assumptions: fields not marked nullable in the PUML are treated as required. 'telefono' and 'descripcion' are nullable. IDs use integer (int64). Dates use date-time string. Prices use number/decimal."
+  },
+  "entities": {
+    "Usuario": {
+      "properties": {
+        "idUsuario": { "type": "integer", "format": "int64" },
+        "nombre": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "password": { "type": "string" },
+        "telefono": { "type": ["string", "null"] }
+      },
+      "required": ["idUsuario", "nombre", "email", "password"]
+    },
+
+    "Mensaje": {
+      "properties": {
+        "idMensaje": { "type": "integer", "format": "int64" },
+        "contenido": { "type": "string" },
+        "fechaEnvio": { "type": "string", "format": "date-time" },
+        "UsuarioId": { "type": "integer", "format": "int64" },
+        "AnuncioId": { "type": "integer", "format": "int64" }
+      },
+      "required": ["idMensaje", "contenido", "fechaEnvio", "UsuarioId", "AnuncioId"]
+    },
+
+    "Anuncio": {
+      "properties": {
+        "idAnuncio": { "type": "integer", "format": "int64" },
+        "titulo": { "type": "string" },
+        "fechaPublicacion": { "type": "string", "format": "date-time" },
+        "estado": { "type": "string" },
+        "precioVenta": { "type": "number", "format": "double" },
+        "UsuarioId": { "type": "integer", "format": "int64" },
+        "VehiculoId": { "type": "integer", "format": "int64" }
+      },
+      "required": ["idAnuncio", "titulo", "fechaPublicacion", "estado", "precioVenta", "UsuarioId", "VehiculoId"]
+    },
+
+    "Vehiculo": {
+      "properties": {
+        "idVehiculo": { "type": "integer", "format": "int64" },
+        "marca": { "type": "string" },
+        "modelo": { "type": "string" },
+        "anio": { "type": "integer" },
+        "kilometros": { "type": "integer" },
+        "descripcion": { "type": ["string", "null"] },
+        "precioBase": { "type": "number", "format": "double" },
+        "CategoriaId": { "type": "integer", "format": "int64" }
+      },
+      "required": ["idVehiculo", "marca", "modelo", "anio", "kilometros", "precioBase", "CategoriaId"]
+    },
+
+    "Categoria": {
+      "properties": {
+        "idCategoria": { "type": "integer", "format": "int64" },
+        "nombre": { "type": "string" }
+      },
+      "required": ["idCategoria", "nombre"]
+    },
+
+    "Pago": {
+      "properties": {
+        "idPago": { "type": "integer", "format": "int64" },
+        "fechaPago": { "type": "string", "format": "date-time" },
+        "cantidad": { "type": "number", "format": "double" },
+        "tipoPago": { "type": "string" },
+        "UsuarioId": { "type": "integer", "format": "int64" },
+        "AnuncioId": { "type": "integer", "format": "int64" }
+      },
+      "required": ["idPago", "fechaPago", "cantidad", "tipoPago", "UsuarioId", "AnuncioId"]
+    }
+  },
+
+  "relationships": [
+    { "from": "Usuario", "to": "Anuncio", "type": "one-to-many", "multiplicity": "1 -> 0..*", "fk": "UsuarioId" },
+    { "from": "Anuncio", "to": "Vehiculo", "type": "one-to-one", "multiplicity": "1 -> 1", "fk": "VehiculoId" },
+    { "from": "Categoria", "to": "Vehiculo", "type": "one-to-many", "multiplicity": "1 -> 0..*", "fk": "CategoriaId" },
+    { "from": "Usuario", "to": "Pago", "type": "one-to-many", "multiplicity": "1 -> 0..*", "fk": "UsuarioId" },
+    { "from": "Anuncio", "to": "Pago", "type": "one-to-many", "multiplicity": "1 -> 0..*", "fk": "AnuncioId" },
+    { "from": "Usuario", "to": "Mensaje", "type": "one-to-many", "multiplicity": "1 -> 0..*", "roles": ["envia","recibe"], "fk": "UsuarioId" },
+    { "from": "Anuncio", "to": "Mensaje", "type": "one-to-many", "multiplicity": "1 -> 0..*", "fk": "AnuncioId" }
+  ]
+}

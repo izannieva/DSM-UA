@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="ApplicationCore" namespace="ApplicationCore.Domain.EN">
+  <class name="Pago" table="Pagos">
+    <id name="IdPago" column="Id" type="long">
+      <generator class="hilo">
+        <param name="table">NHibernateUniqueKey</param>
+        <param name="column">NextHigh</param>
+        <param name="max_lo">100</param>
+      </generator>
+    </id>
+    <property name="FechaPago" column="FechaPago" />
+    <property name="Cantidad" column="Cantidad" />
+    <property name="TipoPago" column="TipoPago" />
+
+    <property name="UsuarioId" column="UsuarioId" />
+    <property name="AnuncioId" column="AnuncioId" />
+    <many-to-one name="Usuario" class="Usuario" column="UsuarioId" insert="false" update="false" />
+    <many-to-one name="Anuncio" class="Anuncio" column="AnuncioId" insert="false" update="false" />
+  </class>
+</hibernate-mapping>

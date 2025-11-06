@@ -1,0 +1,112 @@
+@startuml
+' ==========================================
+'  Modelo de dominio: SellYourTunning (versión visual mejorada)
+' ==========================================
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam classFontStyle bold
+skinparam classFontColor #1A1A1A
+skinparam classAttributeFontColor #333333
+skinparam classBorderColor #777777
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam dpi 180
+left to right direction  
+
+title Modelo de dominio: SellYourTunning
+
+' === CLASES ===
+class Usuario {
+  -idUsuario : int
+  -nombre : String
+  -email : String
+  -password : String
+  -telefono : String
+  +crear()
+  +modificar()
+  +borrar()
+  +consultar()
+}
+
+class Mensaje {
+  -idMensaje : int
+  -contenido : String
+  -fechaEnvio : Date
+  +crear()
+  +modificar()
+  +borrar()
+  +consultar()
+}
+
+class Anuncio {
+  -idAnuncio : int
+  -titulo : String
+  -fechaPublicacion : Date
+  -estado : String
+  -precioVenta : double
+  +crear()
+  +modificar()
+  +borrar()
+  +consultar()
+}
+
+class Vehiculo {
+  -idVehiculo : int
+  -marca : String
+  -modelo : String
+  -anio : int
+  -kilometros : int
+  -descripcion : String
+  -precioBase : double
+  +crear()
+  +modificar()
+  +borrar()
+  +consultar()
+}
+
+class Categoria {
+  -idCategoria : int
+  -nombre : String
+  +crear()
+  +modificar()
+  +borrar()
+  +consultar()
+}
+
+class Pago {
+  -idPago : int
+  -fechaPago : Date
+  -cantidad : double
+  -tipoPago : String
+  +crear()
+  +modificar()
+  +borrar()
+  +consultar()
+}
+
+
+' === RELACIONES (formato OOH4RIA limpio) ===
+
+Usuario "1" -- "0..*" Anuncio : publica >
+Anuncio "1" *-- "1" Vehiculo : ofrece >
+Categoria "1" -- "0..*" Vehiculo : clasifica >
+Usuario "1" -- "0..*" Pago : realiza >
+Anuncio "1" *-- "0..*" Pago : genera >
+Usuario "1" -- "0..*" Mensaje : envia >
+Usuario "1" -- "0..*" Mensaje : recibe >
+Anuncio "1" -- "0..*" Mensaje : contiene >
+
+' === RELACIONES DE CLAVES FORÁNEAS ===
+Anuncio --> Usuario : UsuarioId
+Anuncio --> Vehiculo : VehiculoId
+Vehiculo --> Categoria : CategoriaId
+Pago --> Usuario : UsuarioId
+Pago --> Anuncio : AnuncioId
+Mensaje --> Usuario : UsuarioId
+Mensaje --> Anuncio : AnuncioId
+
+
+
+@enduml
